@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+Atomics/atomic 
+RValueReferences/rvalue 
+Threading/thread
