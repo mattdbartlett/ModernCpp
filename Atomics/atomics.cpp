@@ -214,11 +214,12 @@ int main(int argc, char* argv[])
     }
 
     pool.Stop();
-    std::cout << "Prime numbers from 0 - " << maxValue << std::endl;
+    /* output is disabled so we can look at computational time un-affected by string output
+     * std::cout << "Prime numbers from 0 - " << maxValue << std::endl;
     for (auto& val: factor.GetPrimes())
     {
         std::cout << "|" << std::setw(16) << val << " | " << std::endl;
-    }
+    }*/
     std::cout << factor.GetPrimes().size() << " primes found from 0 - " << maxValue << std::endl;
     return 0;
 }

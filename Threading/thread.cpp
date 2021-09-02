@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string>
 #include <iomanip>
+#include <algorithm>
 
 /**
  * A simple thread pool using std::thread and mutex/condition for synchronization
@@ -51,10 +52,8 @@ public:
     void Stop()
     {
         AddWork(nullptr);
-        for (auto& cur: m_threads)
-        {
-            cur.join();
-        }
+        auto joinWith=[&](auto& th) {th.join();};
+        std::for_each(std::begin(m_threads), std::end(m_threads), joinWith);
         std::cout << "Total work " << m_totalWork << std::endl;
     }
 
@@ -185,6 +184,7 @@ int main(int argc, char* argv[])
 {
     if (argc != 3)
     {
+        std::cout << "Give me number of threads and a maximum range" << std::endl;
         return -1;
     }
 
@@ -203,11 +203,9 @@ int main(int argc, char* argv[])
     }
 
     pool.Stop();
+    auto primes{factor.GetPrimes()};
     std::cout << "Prime numbers from 0 - " << maxValue << std::endl;
-    for (auto& val: factor.GetPrimes())
-    {
-        std::cout << "|" << std::setw(16) << val << " | " << std::endl;
-    }
+    std::for_each(primes.begin(), primes.end(), [](auto& val){std::cout << "|" << std::setw(16) << val << " | " << std::endl;});
     std::cout << factor.GetPrimes().size() << " primes found from 0 - " << maxValue << std::endl;
     return 0;
 }
